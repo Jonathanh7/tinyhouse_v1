@@ -1,9 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Listings } from './sections'
 import * as serviceWorker from './serviceWorker';
 
 render(
-    <div>Hello World!</div>,
+    <Listings title="TinyHouse Listings" />,
   document.getElementById('root')
 );
 
