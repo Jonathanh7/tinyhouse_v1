@@ -1,10 +1,12 @@
 import React from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from "react-apollo";
+import { Avatar, Button, List, Spin } from "antd";
 import { Listings as ListingsData } from './__generated__/Listings';
 import { DeleteListing as DeleteListingData, DeleteListingVariables } from './__generated__/DeleteListing';
+import './styles/Listings.css';
 
-const LISTINGS = gql `
+const LISTINGS = gql ` 
 query Listings {
   listings {
     id
@@ -28,7 +30,7 @@ mutation DeleteListing($id: ID!) {
 }
 `;
 
-interface Props {
+ interface Props {
   title: string;
 }
 
@@ -54,12 +56,35 @@ export const Listings = ({ title }: Props) => {
 
   const listings = data ? data.listings : null;
 
-  const listingsList = listings ? <ul>{listings.map((listing) => {
-    return <li key={listing.id}>{listing.title} <button onClick={() => 
-    handleDeleteListing(listing.id)
-    }>Delete</button></li>
-  })}</ul> : null; 
-
+  const listingsList = listings ? (
+    <List
+      itemLayout="horizontal"
+      dataSource={listings}
+      renderItem={(listings) => (
+        <List.Item
+          actions={[
+            <Button
+              type="primary"
+              onClick={() =>
+                handleDeleteListing(listings.id)
+              }
+            >
+              Delete
+              </Button>
+          ]}
+        >
+          <List.Item.Meta title={listings.title} description={listings.address}
+            avatar={
+              <Avatar
+                src={listings.image}
+                shape="square"
+                size={48}
+              />}
+            />
+          </List.Item>
+      )}
+    />
+  ) : null; 
 
   if (loading) {
     return <h2>Loading...</h2>;
@@ -67,18 +92,17 @@ export const Listings = ({ title }: Props) => {
   if (error) {
     return <h2>Try again later</h2>
   }
-
-  const deleteListingLoadingMessage = deleteListingLoading
-    ? ( <h4>Deletion in progress...</h4> ) : null;
   
     const deleteListingErrorMessage = deleteListingError
     ? (<h4>Something went wrong</h4> ) : null;
   
-  return ( <div>
+  return (
+    <div className="listings">
+      <Spin spinning={deleteListingLoading}>
     <h2>{title}</h2>
     {listingsList}
-    {deleteListingLoadingMessage}
-    {deleteListingErrorMessage}
+        {deleteListingErrorMessage}
+        </Spin>
   </div> )
 };
 

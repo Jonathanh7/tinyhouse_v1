@@ -13,6 +13,7 @@
     "@typescript-eslint/eslint-plugin": "^3.0.2",
     "@typescript-eslint/parser": "^3.0.2",
     "@typescript-eslint/typescript-estree": "^3.0.2",
+    "antd": "^4.3.3",
     "apollo-boost": "^0.4.9",
     "graphql": "^15.0.0",
     "react": "^16.13.1",
