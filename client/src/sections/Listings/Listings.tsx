@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from "react-apollo";
-import { Avatar, Button, List, Spin } from "antd";
+import { Alert, Avatar, Button, List, Spin } from "antd";
 import { Listings as ListingsData } from './__generated__/Listings';
 import { DeleteListing as DeleteListingData, DeleteListingVariables } from './__generated__/DeleteListing';
 import { ListingsSkeleton } from './components';
@@ -87,7 +87,7 @@ export const Listings = ({ title }: Props) => {
     />
   ) : null; 
 
-  if (true) {
+  if (loading) {
     return (
     <div className="listings">
         <ListingsSkeleton title={title} />
@@ -95,18 +95,27 @@ export const Listings = ({ title }: Props) => {
       );
   }
   if (error) {
-    return <h2>Try again later</h2>
+    return (
+      <div className="listings">
+      <ListingsSkeleton title={title} error />
+  </div>
+    )
   }
-  
-    const deleteListingErrorMessage = deleteListingError
-    ? (<h4>Something went wrong</h4> ) : null;
+
+  const deleteListingErrorAlert = deleteListingError ? (
+    <Alert
+      type="error"
+      message="please try again later"
+      className="Listings-skeleton_alert"
+    /> 
+  ): null;
   
   return (
     <div className="listings">
       <Spin spinning={deleteListingLoading}>
+        {deleteListingErrorAlert}
     <h2>{title}</h2>
     {listingsList}
-        {deleteListingErrorMessage}
         </Spin>
   </div> )
 };
