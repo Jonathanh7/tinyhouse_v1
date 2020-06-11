@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "react-apollo";
 import { Avatar, Button, List, Spin } from "antd";
 import { Listings as ListingsData } from './__generated__/Listings';
 import { DeleteListing as DeleteListingData, DeleteListingVariables } from './__generated__/DeleteListing';
+import { ListingsSkeleton } from './components';
 import './styles/Listings.css';
 
 const LISTINGS = gql ` 
@@ -86,8 +87,12 @@ export const Listings = ({ title }: Props) => {
     />
   ) : null; 
 
-  if (loading) {
-    return <h2>Loading...</h2>;
+  if (true) {
+    return (
+    <div className="listings">
+        <ListingsSkeleton title={title} />
+    </div>
+      );
   }
   if (error) {
     return <h2>Try again later</h2>
